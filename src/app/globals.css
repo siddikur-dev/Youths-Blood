@@ -1,26 +1,293 @@
+/* app/globals.css */
+/* Google Fonts Import - Roboto */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* 🩸 Blood Donation Site Colors - Light Mode Default */
+  --color-primary: #b71b1c;
+  /* Blood Red */
+  --color-secondary: #1d1d1d;
+  /* Dark Text */
+  --color-base-100: #ffffff;
+  /* White Background */
+  --color-base-200: #f3f3f3;
+  /* Light Gray Background */
+  --color-base-300: #e5e5e5;
+  /* Light Gray Border */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* Force Light Mode on All Devices */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Override dark mode and keep light mode */
+    --background: #ffffff;
+    --foreground: #171717;
+    --color-primary: #b71b1c;
+    --color-secondary: #1d1d1d;
+    --color-base-100: #ffffff;
+    --color-base-200: #f3f3f3;
+    --color-base-300: #e5e5e5;
   }
+}
+
+/* Light Mode Enforcement */
+html {
+  color-scheme: light;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Custom Blood Donation Classes */
+.blood-bg-primary {
+  background-color: var(--color-primary);
+}
+
+.blood-text-primary {
+  color: var(--color-primary);
+}
+
+.blood-bg-secondary {
+  background-color: var(--color-base-200);
+}
+
+.blood-text-secondary {
+  color: var(--color-secondary);
+}
+
+.blood-bg-white {
+  background-color: var(--color-base-100);
+}
+
+.blood-border-primary {
+  border-color: var(--color-primary);
+}
+
+/* ===== CUSTOM CURSOR STYLES ===== */
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #b71b1c;
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+}
+
+.cursor-outline {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #b71b1c;
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+}
+
+/* Hide default cursor */
+html {
+  cursor: none;
+}
+
+html * {
+  cursor: none;
+}
+
+/* Show default cursor on mobile */
+@media (max-width: 1024px) {
+  html {
+    cursor: auto;
+  }
+  
+  html * {
+    cursor: auto;
+  }
+  
+  .cursor-dot,
+  .cursor-outline {
+    display: none !important;
+  }
+}
+
+/* ===== SMOOTH SCROLL ===== */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ===== ANIMATION UTILITIES ===== */
+.scroll-element {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.scroll-element.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== BLOOD THEME ANIMATIONS ===== */
+@keyframes pulse-blood {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.pulse-blood {
+  animation: pulse-blood 2s infinite;
+}
+
+@keyframes drip {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.blood-drip {
+  position: relative;
+  overflow: hidden;
+}
+
+.blood-drip::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  width: 4px;
+  height: 50%;
+  background: linear-gradient(to bottom, transparent, var(--color-primary), transparent);
+  animation: drip 3s infinite;
+  transform: translateX(-50%);
+}
+
+/* ===== GSAP ANIMATION HELPERS ===== */
+.hero-title {
+  opacity: 0;
+  transform: translateY(100px);
+}
+
+.hero-subtitle {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.hero-button {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.nav-item {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* ===== CUSTOM SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-base-200);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8f1516;
+}
+
+/* ===== FOCUS STATES ===== */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ===== LOADING ANIMATION ===== */
+@keyframes blood-flow {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.blood-flow {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(183, 27, 28, 0.4),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: blood-flow 3s infinite;
+}
+
+/* ===== EMERGENCY PULSE ===== */
+@keyframes emergency-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(183, 27, 28, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(183, 27, 28, 0);
+  }
+}
+
+.emergency-pulse {
+  animation: emergency-pulse 2s infinite;
+}
+
+/* ===== RESPONSIVE DESIGN ENHANCEMENTS ===== */
+@media (max-width: 640px) {
+  .cursor-dot,
+  .cursor-outline {
+    display: none;
+  }
+}
+
+/* = PRINT STYLES = */
+@media print {
+  .cursor-dot,
+  .cursor-outline {
+    display: none !important;
+  }
+  
+  .blood-bg-primary {
+    background-color: #000 !important;
+    color: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }

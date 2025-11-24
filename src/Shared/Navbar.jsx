@@ -113,6 +113,7 @@ const Navbar = () => {
           src={session.user.image}
           alt={session.user.name || "User"}
           className="w-10 h-10 rounded-full object-cover shadow-md"
+          onClick={(e) => { e.stopPropagation(); router.push('/dashboard'); }}
         />
       );
     }
@@ -120,8 +121,14 @@ const Navbar = () => {
     // Default avatar with user's first letter
     const firstLetter = session?.user?.name?.charAt(0)?.toUpperCase() || "U";
     return (
-      <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center text-white font-bold shadow-md">
-        {firstLetter}
+      <div
+        className="w-10 h-10 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center text-white font-bold shadow-md cursor-pointer"
+        role="link"
+        tabIndex={0}
+        onClick={(e) => { e.stopPropagation(); router.push('/dashboard'); }}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); router.push('/dashboard'); } }}
+      >
+        <span className="w-full h-full flex items-center justify-center text-white font-bold">{firstLetter}</span>
       </div>
     );
   };
@@ -346,6 +353,16 @@ const Navbar = () => {
                           <span>Blood Request</span>
                         </Link>
                         <Link
+                          href="/admin/manage-blood"
+                          className="dropdown-item flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all duration-200"
+                          onClick={() => setIsDropdownOpen(false)}
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7h18M3 12h18M3 17h18" />
+                          </svg>
+                          <span>Manage Blood</span>
+                        </Link>
+                        <Link
                           href="/donation-history"
                           className="dropdown-item flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all duration-200"
                           onClick={() => setIsDropdownOpen(false)}
@@ -453,6 +470,13 @@ const Navbar = () => {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Find Donor
+                </Link>
+                <Link
+                  href="/admin/manage-blood"
+                  className="mobile-nav-link text-lg text-gray-700 hover:text-red-600 font-medium py-3 px-4 rounded-xl hover:bg-red-50 transition-all duration-300 border-l-4 border-transparent hover:border-red-500"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Manage Blood
                 </Link>
                 <Link
                   href="/events"

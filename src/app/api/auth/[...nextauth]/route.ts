@@ -46,7 +46,8 @@ const handler = NextAuth({
               name: data.user.name,
               email: data.user.email,
               role: data.user.role || 'user',
-              bloodGroup: data.user.bloodGroup || ''
+              bloodGroup: data.user.bloodGroup || '',
+              image: data.user.image || data.user.avatar || ''
             };
           }
           
@@ -69,6 +70,7 @@ const handler = NextAuth({
         token.role = user.role;
         token.bloodGroup = user.bloodGroup;
         token.id = user.id;
+        token.image = (user as any).image || '';
       }
       return token;
     },
@@ -77,6 +79,8 @@ const handler = NextAuth({
         session.user.id = token.id as string;
         session.user.role = token.role as string;
         session.user.bloodGroup = token.bloodGroup as string;
+        // Attach image if present
+        (session.user as any).image = (token as any).image || '';
       }
       return session;
     }

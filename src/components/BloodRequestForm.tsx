@@ -1,9 +1,9 @@
 // components/BloodRequestForm.tsx
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface BloodRequestFormData {
   patientName: string;
@@ -24,29 +24,29 @@ interface BloodRequestFormData {
 export default function BloodRequestForm() {
   const { data: session } = useSession();
   const [userInfo, setUserInfo] = useState({
-    name: '',
-    email: '',
-    bloodGroup: ''
+    name: "",
+    email: "",
+    bloodGroup: "",
   });
 
   const [formData, setFormData] = useState<BloodRequestFormData>({
-    patientName: '',
-    bloodGroup: '',
-    mobileNumber: '',
-    sickDetails: '',
-    hospitalName: '',
-    location: '',
+    patientName: "",
+    bloodGroup: "",
+    mobileNumber: "",
+    sickDetails: "",
+    hospitalName: "",
+    location: "",
     requiredUnits: 1,
-    urgency: 'normal',
-    neededDate: '',
-    additionalInfo: '',
-    requestedBy: '',
-    requesterEmail: '',
-    requesterBloodGroup: ''
+    urgency: "normal",
+    neededDate: "",
+    additionalInfo: "",
+    requestedBy: "",
+    requesterEmail: "",
+    requesterBloodGroup: "",
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const router = useRouter();
 
   // User information from session
@@ -54,17 +54,17 @@ export default function BloodRequestForm() {
     if (session?.user) {
       const user = session.user;
       setUserInfo({
-        name: user.name || '',
-        email: user.email || '',
-        bloodGroup: user.bloodGroup || ''
+        name: user.name || "",
+        email: user.email || "",
+        bloodGroup: user.bloodGroup || "",
       });
 
       // Autofill requester information
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        requestedBy: user.name || '',
-        requesterEmail: user.email || '',
-        requesterBloodGroup: user.bloodGroup || ''
+        requestedBy: user.name || "",
+        requesterEmail: user.email || "",
+        requesterBloodGroup: user.bloodGroup || "",
       }));
     }
   }, [session]);
@@ -72,22 +72,22 @@ export default function BloodRequestForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
-      const response = await fetch('http://localhost:5000/bloods', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/bloods", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ...formData,
           requestedBy: userInfo.name,
           requesterEmail: userInfo.email,
           requesterBloodGroup: userInfo.bloodGroup,
-          status: 'pending',
+          status: "pending",
           createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
         }),
       });
 
@@ -96,43 +96,46 @@ export default function BloodRequestForm() {
       }
 
       const result = await response.json();
-      
-      console.log('Blood request submitted:', result);
-      alert('Blood request submitted successfully!');
-      
+
+      console.log("Blood request submitted:", result);
+      alert("Blood request submitted successfully!");
+
       // Form reset
       setFormData({
-        patientName: '',
-        bloodGroup: '',
-        mobileNumber: '',
-        sickDetails: '',
-        hospitalName: '',
-        location: '',
+        patientName: "",
+        bloodGroup: "",
+        mobileNumber: "",
+        sickDetails: "",
+        hospitalName: "",
+        location: "",
         requiredUnits: 1,
-        urgency: 'normal',
-        neededDate: '',
-        additionalInfo: '',
+        urgency: "normal",
+        neededDate: "",
+        additionalInfo: "",
         requestedBy: userInfo.name,
         requesterEmail: userInfo.email,
-        requesterBloodGroup: userInfo.bloodGroup
+        requesterBloodGroup: userInfo.bloodGroup,
       });
-      
-      // Redirect to blood request page (existing page)
-      router.push('/blood-request');
-      
+
+      // Redirect to blood requests page
+      router.push("/");
     } catch (error) {
-      console.error('Error submitting blood request:', error);
-      setError('Error submitting blood request. Please try again.');
+      console.error("Error submitting blood request:", error);
+      setError("Error submitting blood request. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: name === 'requiredUnits' ? parseInt(value) : value
+      [name]: name === "requiredUnits" ? parseInt(value) : value,
     }));
   };
 
@@ -144,12 +147,14 @@ export default function BloodRequestForm() {
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-red-600 text-2xl">🔒</span>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Login Required</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Login Required
+          </h2>
           <p className="text-gray-600 mb-6">
             Please login to submit a blood request
           </p>
           <button
-            onClick={() => router.push('/auth/login')}
+            onClick={() => router.push("/auth/signin")}
             className="w-full bg-red-600 text-white py-3 px-6 rounded-xl font-bold hover:bg-red-700 transition-all duration-300"
           >
             Go to Login
@@ -164,7 +169,7 @@ export default function BloodRequestForm() {
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           {/* User Info Card */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+          {/* <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900">Requesting as</h3>
@@ -191,7 +196,7 @@ export default function BloodRequestForm() {
                 </span>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Blood Request Form */}
           <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
@@ -203,7 +208,8 @@ export default function BloodRequestForm() {
                 Request Blood Donation
               </h1>
               <p className="text-gray-600">
-                Fill out the form below to request blood donation for a patient in need
+                Fill out the form below to request blood donation for a patient
+                in need
               </p>
             </div>
 
@@ -224,7 +230,7 @@ export default function BloodRequestForm() {
                     type="text"
                     name="patientName"
                     required
-                    value={formData.patientName}
+                    value={userInfo.name}
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300"
                     placeholder="Enter patient's full name"
@@ -238,7 +244,7 @@ export default function BloodRequestForm() {
                   <select
                     name="bloodGroup"
                     required
-                    value={formData.bloodGroup}
+                    value={userInfo.bloodGroup}
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300"
                   >
@@ -264,8 +270,7 @@ export default function BloodRequestForm() {
                   <input
                     type="tel"
                     name="mobileNumber"
-                    required
-                    value={formData.mobileNumber}
+                    value={userInfo.phone}
                     onChange={handleChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all duration-300"
                     placeholder="Enter mobile number"
@@ -274,7 +279,7 @@ export default function BloodRequestForm() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Required Units *
+                    Required Bags *
                   </label>
                   <input
                     type="number"
@@ -394,7 +399,7 @@ export default function BloodRequestForm() {
                   disabled={loading}
                   className="flex-1 bg-red-600 text-white py-4 px-6 rounded-xl font-bold text-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {loading ? 'Submitting...' : 'Submit Blood Request'}
+                  {loading ? "Submitting..." : "Submit Blood Request"}
                 </button>
                 <button
                   type="button"

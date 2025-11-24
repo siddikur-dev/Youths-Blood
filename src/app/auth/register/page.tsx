@@ -13,6 +13,7 @@ export default function Signup() {
     password: '',
     confirmPassword: '',
     bloodGroup: '',
+    image: '',
     phone: '',
     address: ''
   });
@@ -48,6 +49,7 @@ export default function Signup() {
           bloodGroup: formData.bloodGroup,
           phone: formData.phone,
           address: formData.address,
+          image: formData.image || '',
           role: 'user'
         }),
       });
@@ -174,6 +176,22 @@ export default function Signup() {
                 className="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm"
                 placeholder="Enter your email"
               />
+            </div>
+
+            <div>
+              <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+                Profile Image URL
+              </label>
+              <input
+                id="image"
+                name="image"
+                type="url"
+                value={formData.image}
+                onChange={handleChange}
+                className="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-xl focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm"
+                placeholder="https://example.com/your-avatar.jpg"
+              />
+              <p className="text-xs text-gray-500 mt-1">Optional: paste a link to your avatar image (will show in navbar).</p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">

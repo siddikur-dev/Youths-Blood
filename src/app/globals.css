@@ -113,11 +113,11 @@ html * {
   html {
     cursor: auto;
   }
-  
+
   html * {
     cursor: auto;
   }
-  
+
   .cursor-dot,
   .cursor-outline {
     display: none !important;
@@ -143,10 +143,13 @@ html {
 
 /* ===== BLOOD THEME ANIMATIONS ===== */
 @keyframes pulse-blood {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
+
   50% {
     transform: scale(1.05);
     opacity: 0.8;
@@ -162,9 +165,11 @@ html {
     transform: translateY(-100%);
     opacity: 0;
   }
+
   50% {
     opacity: 1;
   }
+
   100% {
     transform: translateY(100%);
     opacity: 0;
@@ -239,27 +244,29 @@ a:focus-visible {
   0% {
     background-position: -200% 0;
   }
+
   100% {
     background-position: 200% 0;
   }
 }
 
 .blood-flow {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(183, 27, 28, 0.4),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(183, 27, 28, 0.4),
+      transparent);
   background-size: 200% 100%;
   animation: blood-flow 3s infinite;
 }
 
 /* ===== EMERGENCY PULSE ===== */
 @keyframes emergency-pulse {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(183, 27, 28, 0.7);
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
   }
+
   70% {
     box-shadow: 0 0 0 20px rgba(183, 27, 28, 0);
   }
@@ -271,6 +278,7 @@ a:focus-visible {
 
 /* ===== RESPONSIVE DESIGN ENHANCEMENTS ===== */
 @media (max-width: 640px) {
+
   .cursor-dot,
   .cursor-outline {
     display: none;
@@ -279,11 +287,12 @@ a:focus-visible {
 
 /* = PRINT STYLES = */
 @media print {
+
   .cursor-dot,
   .cursor-outline {
     display: none !important;
   }
-  
+
   .blood-bg-primary {
     background-color: #000 !important;
     color: #fff !important;

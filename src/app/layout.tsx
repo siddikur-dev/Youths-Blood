@@ -6,6 +6,8 @@ import Footer from "../Shared/Footer";
 import Navbar from "../Shared/Navbar";
 import AOSProvider from "../components/AOSProvider";
 import CustomCursor from "../components/CustomCursor";
+import ReactQueryProvider from "./providers/ReactQueryProvider";
+import { SessionProvider } from "../app/providers/SessionProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,7 +21,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Youth Blood - Donate Blood, Keep the World Beating",
-  description: "Join Youth Blood - A platform for young blood donors to save lives and keep the world beating through blood donation",
+  description: "Join Youth Blood - A platform for young blood donors to save lives",
 };
 
 export default function RootLayout({
@@ -29,15 +31,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <AOSProvider>
-          <CustomCursor />
-          <Navbar />
-          {children}
-          <Footer />
-        </AOSProvider>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ReactQueryProvider>
+          <SessionProvider>
+            <AOSProvider>
+              <CustomCursor />
+              <Navbar />
+              {children}
+              <Footer />
+            </AOSProvider>
+          </SessionProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );

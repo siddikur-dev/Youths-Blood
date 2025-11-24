@@ -1,38 +1,26 @@
 // components/ProtectedRoute.tsx
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const { status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    const checkAuth = () => {
-      const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-      setIsAuthenticated(loggedIn);
-      
-      if (!loggedIn) {
-        router.push('/auth/login');
-      }
-    };
+    // If unauthenticated, redirect to login
+    if (status === 'unauthenticated') {
+      router.push('/auth/login');
+    }
+  }, [status, router]);
 
-    checkAuth();
-    
-    // Listen for storage changes
-    window.addEventListener('storage', checkAuth);
-    
-    return () => {
-      window.removeEventListener('storage', checkAuth);
-    };
-  }, [router]);
-
-  if (isAuthenticated === null) {
+  if (status === 'loading') {
     return (
       <div className="min-h-screen bg-gray-50 pt-20 flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600"></div>
@@ -40,7 +28,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     );
   }
 
-  if (!isAuthenticated) {
+  if (status === 'unauthenticated') {
     return null;
   }
 

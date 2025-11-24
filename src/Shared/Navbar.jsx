@@ -84,21 +84,19 @@ const Navbar = () => {
     }
   }, [isMenuOpen]);
 
-  const handleLogin = () => {
-    localStorage.setItem("isLoggedIn", "true");
-    setIsLoggedIn(true);
+  const handleLoginRedirect = () => {
+    router.push("/auth/login");
     setIsMenuOpen(false);
+  };
 
-    // Login animation
-    gsap.fromTo(
-      ".user-avatar",
-      { scale: 0, rotation: -180 },
-      { scale: 1, rotation: 0, duration: 0.8, ease: "elastic.out(1, 0.5)" }
-    );
+  const handleRegisterRedirect = () => {
+    router.push("/auth/register");
+    setIsMenuOpen(false);
   };
 
   const handleLogout = () => {
     localStorage.setItem("isLoggedIn", "false");
+    localStorage.removeItem("user");
     setIsLoggedIn(false);
     setIsDropdownOpen(false);
     setIsMenuOpen(false);
@@ -152,12 +150,11 @@ const Navbar = () => {
               <Link
                 href="/"
                 className="flex items-center space-x-2 text-xl font-bold text-red-600 hover:text-red-700 transition-colors duration-300"
-                onClick={(e) => smoothScroll(e, "/")}
               >
                 <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg">
-                  BD
+                  YB
                 </div>
-                <span className="hidden sm:block">Youth Blood </span>
+                <span className="hidden sm:block">Youth Blood</span>
               </Link>
             </div>
 
@@ -166,7 +163,6 @@ const Navbar = () => {
               <Link
                 href="/"
                 className="nav-link text-gray-700 hover:text-red-600 font-medium transition-all duration-300 hover:scale-105"
-                onClick={(e) => smoothScroll(e, "/")}
                 data-aos="fade-down"
                 data-aos-delay="100"
               >
@@ -175,47 +171,34 @@ const Navbar = () => {
               <Link
                 href="/about"
                 className="nav-link text-gray-700 hover:text-red-600 font-medium transition-all duration-300 hover:scale-105"
-                onClick={(e) => smoothScroll(e, "/about")}
                 data-aos="fade-down"
                 data-aos-delay="200"
               >
                 About
               </Link>
               <Link
-                href="/blood request"
+                href="/blood-request"
                 className="nav-link text-gray-700 hover:text-red-600 font-medium transition-all duration-300 hover:scale-105"
-                onClick={(e) => smoothScroll(e, "/services")}
                 data-aos="fade-down"
                 data-aos-delay="300"
               >
                 Blood Request
               </Link>
               <Link
-                href="/events"
+                href="/find-donor"
                 className="nav-link text-gray-700 hover:text-red-600 font-medium transition-all duration-300 hover:scale-105"
-                onClick={(e) => smoothScroll(e, "/events")}
                 data-aos="fade-down"
                 data-aos-delay="400"
               >
-                Events
+                Find Donor
               </Link>
               <Link
-                href="/blog"
+                href="/events"
                 className="nav-link text-gray-700 hover:text-red-600 font-medium transition-all duration-300 hover:scale-105"
-                onClick={(e) => smoothScroll(e, "/blog")}
                 data-aos="fade-down"
                 data-aos-delay="500"
               >
-                Blog
-              </Link>
-              <Link
-                href="/pages"
-                className="nav-link text-gray-700 hover:text-red-600 font-medium transition-all duration-300 hover:scale-105"
-                onClick={(e) => smoothScroll(e, "/pages")}
-                data-aos="fade-down"
-                data-aos-delay="600"
-              >
-                Pages
+                Events
               </Link>
             </div>
 
@@ -225,16 +208,16 @@ const Navbar = () => {
                 <div
                   className="flex space-x-3"
                   data-aos="fade-down"
-                  data-aos-delay="700"
+                  data-aos-delay="600"
                 >
                   <button
-                    onClick={handleLogin}
+                    onClick={handleLoginRedirect}
                     className="px-6 py-2 border border-red-600 text-red-600 rounded-full font-medium hover:bg-red-600 hover:text-white transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
                   >
                     Login
                   </button>
                   <button
-                    onClick={handleLogin}
+                    onClick={handleRegisterRedirect}
                     className="px-6 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-full font-medium hover:from-red-600 hover:to-red-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                   >
                     Register
@@ -244,12 +227,14 @@ const Navbar = () => {
                 <div className="relative">
                   <button
                     onClick={toggleDropdown}
-                    className="flex items-center space-x-2 bg-gray-50 rounded-full px-4 py-2 hover:bg-gray-100 transition-all duration-300 border border-gray-200 hover:border-red-300"
+                    className="flex items-center space-x-3 bg-white rounded-full px-4 py-2 hover:bg-gray-50 transition-all duration-300 border border-gray-200 hover:border-red-300 shadow-sm"
                   >
-                    <div className="user-avatar w-8 h-8 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md">
-                      JD
+                    <div className="user-avatar w-10 h-10 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center text-white font-bold shadow-md">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
                     </div>
-                    <span className="text-gray-700 font-medium">John Doe</span>
+                    <span className="text-gray-700 font-medium hidden md:block">My Profile</span>
                     <svg
                       className={`w-4 h-4 text-gray-500 transition-transform duration-300 ${
                         isDropdownOpen ? "rotate-180" : ""
@@ -269,91 +254,52 @@ const Navbar = () => {
 
                   {isDropdownOpen && (
                     <div className="dropdown-menu absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
-                      <div className="p-4 border-b border-gray-100">
-                        <p className="text-sm text-gray-600">
+                      <div className="p-4 border-b border-gray-100 bg-red-50">
+                        <p className="font-medium text-gray-900">John Doe</p>
+                        <p className="text-sm text-gray-600 mt-1">
                           john.doe@example.com
                         </p>
                       </div>
                       <div className="p-2">
                         <Link
-                          href="/add-blood"
+                          href="/dashboard"
                           className="dropdown-item flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all duration-200"
                           onClick={() => setIsDropdownOpen(false)}
                         >
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M12 4v16m8-8H4"
-                            />
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                           </svg>
-                          <span>Add Blood</span>
+                          <span>Dashboard</span>
                         </Link>
                         <Link
-                          href="/add-blog"
+                          href="/my-profile"
                           className="dropdown-item flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all duration-200"
                           onClick={() => setIsDropdownOpen(false)}
                         >
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                            />
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                           </svg>
-                          <span>Add Blog</span>
+                          <span>My Profile</span>
                         </Link>
                         <Link
-                          href="/about"
+                          href="/blood-request"
                           className="dropdown-item flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all duration-200"
                           onClick={() => setIsDropdownOpen(false)}
                         >
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                           </svg>
-                          <span>About</span>
+                          <span>Blood Request</span>
                         </Link>
                         <Link
-                          href="/contact"
+                          href="/donation-history"
                           className="dropdown-item flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all duration-200"
                           onClick={() => setIsDropdownOpen(false)}
                         >
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                            />
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                           </svg>
-                          <span>Contact</span>
+                          <span>Donation History</span>
                         </Link>
                       </div>
                       <div className="border-t border-gray-100 p-2">
@@ -419,44 +365,37 @@ const Navbar = () => {
                 <Link
                   href="/"
                   className="mobile-nav-link text-lg text-gray-700 hover:text-red-600 font-medium py-3 px-4 rounded-xl hover:bg-red-50 transition-all duration-300 border-l-4 border-transparent hover:border-red-500"
-                  onClick={(e) => smoothScroll(e, "/")}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   Home
                 </Link>
                 <Link
                   href="/about"
                   className="mobile-nav-link text-lg text-gray-700 hover:text-red-600 font-medium py-3 px-4 rounded-xl hover:bg-red-50 transition-all duration-300 border-l-4 border-transparent hover:border-red-500"
-                  onClick={(e) => smoothScroll(e, "/about")}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   About
                 </Link>
                 <Link
-                  href="/services"
+                  href="/blood-request"
                   className="mobile-nav-link text-lg text-gray-700 hover:text-red-600 font-medium py-3 px-4 rounded-xl hover:bg-red-50 transition-all duration-300 border-l-4 border-transparent hover:border-red-500"
-                  onClick={(e) => smoothScroll(e, "/services")}
+                  onClick={() => setIsMenuOpen(false)}
                 >
-                  Services
+                  Blood Request
+                </Link>
+                <Link
+                  href="/find-donor"
+                  className="mobile-nav-link text-lg text-gray-700 hover:text-red-600 font-medium py-3 px-4 rounded-xl hover:bg-red-50 transition-all duration-300 border-l-4 border-transparent hover:border-red-500"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Find Donor
                 </Link>
                 <Link
                   href="/events"
                   className="mobile-nav-link text-lg text-gray-700 hover:text-red-600 font-medium py-3 px-4 rounded-xl hover:bg-red-50 transition-all duration-300 border-l-4 border-transparent hover:border-red-500"
-                  onClick={(e) => smoothScroll(e, "/events")}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   Events
-                </Link>
-                <Link
-                  href="/blog"
-                  className="mobile-nav-link text-lg text-gray-700 hover:text-red-600 font-medium py-3 px-4 rounded-xl hover:bg-red-50 transition-all duration-300 border-l-4 border-transparent hover:border-red-500"
-                  onClick={(e) => smoothScroll(e, "/blog")}
-                >
-                  Blog
-                </Link>
-                <Link
-                  href="/pages"
-                  className="mobile-nav-link text-lg text-gray-700 hover:text-red-600 font-medium py-3 px-4 rounded-xl hover:bg-red-50 transition-all duration-300 border-l-4 border-transparent hover:border-red-500"
-                  onClick={(e) => smoothScroll(e, "/pages")}
-                >
-                  Pages
                 </Link>
               </div>
 
@@ -465,13 +404,13 @@ const Navbar = () => {
                 {!isLoggedIn ? (
                   <div className="flex flex-col space-y-3">
                     <button
-                      onClick={handleLogin}
+                      onClick={handleLoginRedirect}
                       className="w-full py-3 border border-red-600 text-red-600 rounded-xl font-medium hover:bg-red-600 hover:text-white transition-all duration-300 transform hover:scale-105 text-lg"
                     >
                       Login
                     </button>
                     <button
-                      onClick={handleLogin}
+                      onClick={handleRegisterRedirect}
                       className="w-full py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-medium hover:from-red-600 hover:to-red-700 transition-all duration-300 transform hover:scale-105 shadow-lg text-lg"
                     >
                       Register
@@ -479,9 +418,11 @@ const Navbar = () => {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-xl">
-                      <div className="user-avatar w-10 h-10 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center text-white font-bold shadow-md">
-                        JD
+                    <div className="flex items-center space-x-3 p-4 bg-red-50 rounded-xl">
+                      <div className="user-avatar w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center text-white font-bold shadow-md">
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">John Doe</p>
@@ -492,44 +433,24 @@ const Navbar = () => {
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <Link
-                        href="/add-blood"
-                        className="flex flex-col items-center justify-center p-4 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-all duration-300"
+                        href="/dashboard"
+                        className="flex flex-col items-center justify-center p-4 bg-white border border-red-200 text-red-600 rounded-xl hover:bg-red-50 transition-all duration-300"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        <svg
-                          className="w-6 h-6 mb-2"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 4v16m8-8H4"
-                          />
+                        <svg className="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                         </svg>
-                        <span className="text-sm font-medium">Add Blood</span>
+                        <span className="text-sm font-medium text-center">Dashboard</span>
                       </Link>
                       <Link
-                        href="/add-blog"
-                        className="flex flex-col items-center justify-center p-4 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-all duration-300"
+                        href="/my-profile"
+                        className="flex flex-col items-center justify-center p-4 bg-white border border-red-200 text-red-600 rounded-xl hover:bg-red-50 transition-all duration-300"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        <svg
-                          className="w-6 h-6 mb-2"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                          />
+                        <svg className="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
-                        <span className="text-sm font-medium">Add Blog</span>
+                        <span className="text-sm font-medium text-center">My Profile</span>
                       </Link>
                     </div>
                     <button
@@ -545,8 +466,6 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-      {/*  */}
-      
     </>
   );
 };
